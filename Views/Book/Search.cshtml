@@ -1,0 +1,104 @@
+
+@model OnlineBookTracker.Models.BookSearchResponse
+
+@{
+    ViewData["Title"] = "Search Books";
+}
+
+<div class="container py-4">
+    <h2 class="mb-3">Search Results</h2>
+
+    <form asp-controller="Book" asp-action="Search"
+          method="get" class="mb-4">
+        <div class="input-group">
+            <input name="query"
+                   value="@ViewBag.Query"
+                   class="form-control"
+                   placeholder="Search by title or author..."
+                   required
+                   maxlength="200" />
+
+            <button class="btn btn-primary" type="submit">
+                Search
+            </button>
+        </div>
+    </form>
+
+    @if (ViewBag.Error != null)
+    {
+        <div class="alert alert-danger">
+            @ViewBag.Error
+        </div>
+    }
+
+    @foreach (var error in ViewData.ModelState.Values
+        .SelectMany(v => v.Errors))
+    {
+        <div class="alert alert-warning">
+            @error.ErrorMessage
+        </div>
+    }
+
+    @if (Model.Books.Count == 0 && ViewBag.Error == null)
+    {
+        <div class="alert alert-info">
+            No books to display. Try another title or author.
+        </div>
+    }
+
+    <div class="row g-4">
+        @foreach (var book in Model.Books)
+        {
+            <div class="col-sm-6 col-lg-4 col-xl-3">
+                <div class="card h-100 shadow-sm">
+                    @if (book.CoverUrl != null)
+                    {
+                        <img src="@book.CoverUrl"
+                             class="card-img-top"
+                             alt="Cover of @book.Title"
+                             style="height:250px; object-fit:contain; padding:12px;"
+                             loading="lazy"
+                             onerror="this.style.display='none';" />
+                    }
+                    else
+                    {
+                        <div class="bg-light d-flex align-items-center justify-content-center"
+                             style="height:250px;">
+                            <span class="text-muted">No cover available</span>
+                        </div>
+                    }
+
+                    <div class="card-body d-flex flex-column">
+                        <h5 class="card-title">@book.Title</h5>
+
+                        <p class="card-text small">
+                            <strong>Author:</strong> @book.AuthorDisplay
+                        </p>
+
+                        <p class="card-text small">
+                            <strong>First published:</strong>
+                            @(book.FirstPublishYear?.ToString() ?? "Unknown")
+                        </p>
+
+                        <p class="card-text small">
+                            <strong>ISBN:</strong>
+                            @(book.FirstIsbn ?? "Unavailable")
+                        </p>
+
+                        <a asp-controller="Book"
+                           asp-action="Details"
+                           asp-route-id="@book.Key.Split('/').Last()"
+                           class="btn btn-outline-primary mt-auto">
+                            View Details
+                        </a>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+
+    <a asp-controller="Book" asp-action="Index"
+       class="btn btn-secondary mt-4">
+        Back to Home
+    </a>
+</div>

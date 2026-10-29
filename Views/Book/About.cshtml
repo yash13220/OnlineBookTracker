@@ -1,0 +1,23 @@
+
+@{
+    ViewData["Title"] = "About";
+}
+
+<div class="container py-5">
+    <h1>About Online Book Tracker</h1>
+
+    <p>
+        Online Book Tracker helps readers discover books, manage their
+        personal libraries, monitor reading progress, and write reviews.
+    </p>
+
+    <p>
+        Book information is retrieved from Open Library.
+        Personal collections and reviews are stored in a MySQL database.
+    </p>
+
+    <a asp-controller="Book" asp-action="Index"
+       class="btn btn-primary">
+        Search Books
+    </a>
+</div>

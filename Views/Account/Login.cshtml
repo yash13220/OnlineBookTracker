@@ -1,0 +1,66 @@
+@model OnlineBookTracker.Models.LoginViewModel
+
+@{
+    ViewData["Title"] = "Login";
+}
+
+<div class="container py-5">
+    <div class="card shadow-sm border-0 mx-auto" style="max-width: 500px;">
+        <div class="card-body p-4">
+            <h1 class="h3 text-center mb-2">Welcome Back</h1>
+            <p class="text-muted text-center mb-4">
+                Log in to access your personal library.
+            </p>
+
+            <form asp-controller="Account"
+                  asp-action="Login"
+                  method="post">
+
+                <div asp-validation-summary="ModelOnly"
+                     class="text-danger mb-3"></div>
+
+                <input asp-for="ReturnUrl" type="hidden" />
+
+                <div class="mb-3">
+                    <label asp-for="Email" class="form-label"></label>
+                    <input asp-for="Email"
+                           class="form-control"
+                           autocomplete="email" />
+                    <span asp-validation-for="Email"
+                          class="text-danger"></span>
+                </div>
+
+                <div class="mb-3">
+                    <label asp-for="Password" class="form-label"></label>
+                    <input asp-for="Password"
+                           class="form-control"
+                           autocomplete="current-password" />
+                    <span asp-validation-for="Password"
+                          class="text-danger"></span>
+                </div>
+
+                <div class="form-check mb-3">
+                    <input asp-for="RememberMe" class="form-check-input" />
+                    <label asp-for="RememberMe"
+                           class="form-check-label"></label>
+                </div>
+
+                <button type="submit"
+                        class="btn btn-primary w-100">
+                    Log In
+                </button>
+            </form>
+
+            <p class="text-center mt-4 mb-0">
+                Don't have an account?
+                <a asp-controller="Account" asp-action="Register">
+                    Register
+                </a>
+            </p>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

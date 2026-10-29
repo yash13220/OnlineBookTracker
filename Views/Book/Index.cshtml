@@ -1,0 +1,69 @@
+
+@{
+    ViewData["Title"] = "Online Book Tracker";
+}
+
+<div class="container py-5">
+    <div class="text-center mb-5">
+        <h1 class="display-4 fw-bold">Online Book Tracker</h1>
+        <p class="lead text-muted">
+            Discover books, track your reading, and build your personal library.
+        </p>
+    </div>
+
+    <div class="card shadow-sm mx-auto" style="max-width: 750px;">
+        <div class="card-body p-4">
+            <h4 class="mb-3">Find your next book</h4>
+
+            <form asp-controller="Book" asp-action="Search" method="get">
+                <div class="input-group input-group-lg">
+                    <input type="text"
+                           name="query"
+                           class="form-control"
+                           placeholder="Enter book title or author..."
+                           required
+                           maxlength="200" />
+
+                    <button class="btn btn-primary" type="submit">
+                        Search
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div class="row text-center mt-5 g-4">
+        <div class="col-md-4">
+            <div class="card h-100 border-0 shadow-sm">
+                <div class="card-body">
+                    <h5>Discover Books</h5>
+                    <p class="text-muted mb-0">
+                        Search a large catalogue of books.
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="card h-100 border-0 shadow-sm">
+                <div class="card-body">
+                    <h5>Track Reading</h5>
+                    <p class="text-muted mb-0">
+                        Organize the books you want to read.
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="card h-100 border-0 shadow-sm">
+                <div class="card-body">
+                    <h5>Write Reviews</h5>
+                    <p class="text-muted mb-0">
+                        Rate books and record your opinions.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

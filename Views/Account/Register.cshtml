@@ -1,0 +1,78 @@
+@model OnlineBookTracker.Models.RegisterViewModel
+
+@{
+    ViewData["Title"] = "Register";
+}
+
+<div class="container py-5">
+    <div class="card shadow-sm border-0 mx-auto" style="max-width: 500px;">
+        <div class="card-body p-4">
+            <h1 class="h3 text-center mb-2">Create an Account</h1>
+            <p class="text-muted text-center mb-4">
+                Start building your personal book library.
+            </p>
+
+            <form asp-controller="Account"
+                  asp-action="Register"
+                  method="post">
+
+                <div asp-validation-summary="ModelOnly"
+                     class="text-danger mb-3"></div>
+
+                <div class="mb-3">
+                    <label asp-for="UserName" class="form-label"></label>
+                    <input asp-for="UserName"
+                           class="form-control"
+                           autocomplete="username" />
+                    <span asp-validation-for="UserName"
+                          class="text-danger"></span>
+                </div>
+
+                <div class="mb-3">
+                    <label asp-for="Email" class="form-label"></label>
+                    <input asp-for="Email"
+                           class="form-control"
+                           autocomplete="email" />
+                    <span asp-validation-for="Email"
+                          class="text-danger"></span>
+                </div>
+
+                <div class="mb-3">
+                    <label asp-for="Password" class="form-label"></label>
+                    <input asp-for="Password"
+                           class="form-control"
+                           autocomplete="new-password" />
+                    <span asp-validation-for="Password"
+                          class="text-danger"></span>
+                    <small class="text-muted">
+                        Use at least 8 characters.
+                    </small>
+                </div>
+
+                <div class="mb-3">
+                    <label asp-for="ConfirmPassword"
+                           class="form-label"></label>
+                    <input asp-for="ConfirmPassword"
+                           class="form-control"
+                           autocomplete="new-password" />
+                    <span asp-validation-for="ConfirmPassword"
+                          class="text-danger"></span>
+                </div>
+
+                <button type="submit"
+                        class="btn btn-primary w-100">
+                    Register
+                </button>
+            </form>
+
+            <p class="text-center mt-4 mb-0">
+                Already have an account?
+                <a asp-controller="Account" asp-action="Login">Log in</a>
+            </p>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

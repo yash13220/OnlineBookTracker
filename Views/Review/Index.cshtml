@@ -1,0 +1,112 @@
+
+@model OnlineBookTracker.Models.ReviewListViewModel
+@using System.Security.Claims
+
+@{
+    ViewData["Title"] = "Book Reviews";
+    int? currentUserId = int.TryParse(
+        User.FindFirstValue(ClaimTypes.NameIdentifier),
+        out int parsedUserId) ? parsedUserId : null;
+}
+
+<div class="container py-4">
+    <a asp-controller="Book" asp-action="Details"
+       asp-route-id="@Model.OpenLibraryKey"
+       class="btn btn-outline-secondary mb-3">
+        Back to Book Details
+    </a>
+
+    <h2>Reviews: @Model.BookTitle</h2>
+
+    @if (TempData["SuccessMessage"] != null)
+    {
+        <div class="alert alert-success">
+            @TempData["SuccessMessage"]
+        </div>
+    }
+
+    @if (TempData["ErrorMessage"] != null)
+    {
+        <div class="alert alert-danger">
+            @TempData["ErrorMessage"]
+        </div>
+    }
+
+    @if (ViewBag.Warning != null)
+    {
+        <div class="alert alert-warning">@ViewBag.Warning</div>
+    }
+
+    @if (User.Identity?.IsAuthenticated == true &&
+         !Model.Reviews.Any(r => r.UserId == currentUserId))
+    {
+        <a asp-controller="Review" asp-action="Create"
+           asp-route-id="@Model.OpenLibraryKey"
+           class="btn btn-primary my-3">
+            Write a Review
+        </a>
+    }
+    else if (User.Identity?.IsAuthenticated != true)
+    {
+        <p class="my-3">
+            <a asp-controller="Account" asp-action="Login">Log in</a>
+            to write a review.
+        </p>
+    }
+
+    @if (!Model.Reviews.Any())
+    {
+        <div class="alert alert-info">
+            No reviews yet. Be the first to review this book!
+        </div>
+    }
+    else
+    {
+        @foreach (var review in Model.Reviews)
+        {
+            <div class="card shadow-sm mb-3">
+                <div class="card-body">
+                    <h5 class="card-title">
+                        @(review.User?.UserName ?? "Reader")
+                    </h5>
+
+                    <p class="mb-1">
+                        <strong>Rating:</strong> @review.Rating / 10
+                    </p>
+
+                    <p class="text-muted small">
+                        Posted: @review.ReviewDate.ToLocalTime().ToString("dd MMM yyyy")
+                        @if (review.UpdatedDate.HasValue)
+                        {
+                            <span>
+                                · Edited: @review.UpdatedDate.Value.ToLocalTime().ToString("dd MMM yyyy")
+                            </span>
+                        }
+                    </p>
+
+                    <p class="card-text"
+                       style="white-space: pre-wrap">@review.ReviewText</p>
+
+                    @if (currentUserId == review.UserId)
+                    {
+                        <a asp-controller="Review" asp-action="Edit"
+                           asp-route-id="@review.ReviewId"
+                           class="btn btn-sm btn-outline-primary">
+                            Edit
+                        </a>
+
+                        <form asp-controller="Review" asp-action="Delete"
+                              asp-route-id="@review.ReviewId"
+                              method="post" class="d-inline"
+                              onsubmit="return confirm('Delete this review?');">
+                            <button type="submit"
+                                    class="btn btn-sm btn-outline-danger">
+                                Delete
+                            </button>
+                        </form>
+                    }
+                </div>
+            </div>
+        }
+    }
+</div>
